@@ -1,3 +1,5 @@
 CHANGES
 =======
 
+* fixing bugs/mkaing changes for volume to point to new plugin rather than horizon proper
+* first commit
