@@ -15,13 +15,13 @@
 from django.conf.urls import patterns
 from django.conf.urls import url
 
-from openstack_dashboard.dashboards.project.volumes \
+from horizon_metadata_plugin.content.volumes \
     .volumes import views
-from openstack_dashboard.dashboards.project.volumes.backups \
+from horizon_metadata_plugin.content.volumes.backups \
     import views as backup_views
 
 
-VIEWS_MOD = ('openstack_dashboard.dashboards.project.volumes.volumes.views')
+VIEWS_MOD = ('horizon_metadata_plugin.content.volumes.volumes.views')
 
 urlpatterns = patterns(
     VIEWS_MOD,

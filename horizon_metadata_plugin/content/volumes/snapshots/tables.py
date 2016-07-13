@@ -26,7 +26,7 @@ from openstack_dashboard import api
 from openstack_dashboard.api import cinder
 from openstack_dashboard import policy
 
-from openstack_dashboard.dashboards.project.volumes \
+from horizon_metadata_plugin.content.volumes \
     .volumes import tables as volume_tables
 
 

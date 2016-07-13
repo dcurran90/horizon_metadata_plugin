@@ -36,12 +36,12 @@ from openstack_dashboard import exceptions as dashboard_exception
 from openstack_dashboard.usage import quotas
 from openstack_dashboard.utils import filters
 
-from openstack_dashboard.dashboards.project.volumes \
+from horizon_metadata_plugin.content.volumes \
     .volumes import forms as project_forms
 
-from openstack_dashboard.dashboards.project.volumes \
+from horizon_metadata_plugin.content.volumes \
     .volumes import tables as project_tables
-from openstack_dashboard.dashboards.project.volumes \
+from horizon_metadata_plugin.content.volumes \
     .volumes import tabs as project_tabs
 
 

@@ -23,13 +23,13 @@ from horizon import workflows
 from openstack_dashboard import api
 from openstack_dashboard.api import cinder
 
-from openstack_dashboard.dashboards.project.volumes \
+from horizon_metadata_plugin.content.volumes \
     .cgroups import workflows as vol_cgroup_workflows
-from openstack_dashboard.dashboards.project.volumes \
+from horizon_metadata_plugin.content.volumes \
     .cgroups import forms as vol_cgroup_forms
-from openstack_dashboard.dashboards.project.volumes \
+from horizon_metadata_plugin.content.volumes \
     .cgroups import tables as vol_cgroup_tables
-from openstack_dashboard.dashboards.project.volumes \
+from horizon_metadata_plugin.content.volumes \
     .cgroups import tabs as vol_cgroup_tabs
 
 CGROUP_INFO_FIELDS = ("name",

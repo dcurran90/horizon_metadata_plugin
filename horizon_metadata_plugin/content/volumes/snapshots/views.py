@@ -21,11 +21,11 @@ from horizon.utils import memoized
 
 from openstack_dashboard import api
 
-from openstack_dashboard.dashboards.project.volumes \
+from horizon_metadata_plugin.content.volumes \
     .snapshots import forms as vol_snapshot_forms
-from openstack_dashboard.dashboards.project.volumes \
+from horizon_metadata_plugin.content.volumes \
     .snapshots import tables as vol_snapshot_tables
-from openstack_dashboard.dashboards.project.volumes \
+from horizon_metadata_plugin.content.volumes \
     .snapshots import tabs as vol_snapshot_tabs
 
 

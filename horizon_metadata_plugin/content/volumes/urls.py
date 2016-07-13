@@ -16,14 +16,14 @@ from django.conf.urls import include
 from django.conf.urls import patterns
 from django.conf.urls import url
 
-from openstack_dashboard.dashboards.project.volumes.backups \
+from horizon_metadata_plugin.content.volumes.backups \
     import urls as backups_urls
-from openstack_dashboard.dashboards.project.volumes.cgroups \
+from horizon_metadata_plugin.content.volumes.cgroups \
     import urls as cgroup_urls
-from openstack_dashboard.dashboards.project.volumes.snapshots \
+from horizon_metadata_plugin.content.volumes.snapshots \
     import urls as snapshot_urls
-from openstack_dashboard.dashboards.project.volumes import views
-from openstack_dashboard.dashboards.project.volumes.volumes \
+from horizon_metadata_plugin.content.volumes import views
+from horizon_metadata_plugin.content.volumes.volumes \
     import urls as volume_urls
 
 urlpatterns = patterns(

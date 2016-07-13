@@ -22,13 +22,13 @@ from horizon import tabs
 from openstack_dashboard import api
 from openstack_dashboard import policy
 
-from openstack_dashboard.dashboards.project.volumes.backups \
+from horizon_metadata_plugin.content.volumes.backups \
     import tables as backups_tables
-from openstack_dashboard.dashboards.project.volumes.cgroups \
+from horizon_metadata_plugin.content.volumes.cgroups \
     import tables as vol_cgroup_tables
-from openstack_dashboard.dashboards.project.volumes.snapshots \
+from horizon_metadata_plugin.content.volumes.snapshots \
     import tables as vol_snapshot_tables
-from openstack_dashboard.dashboards.project.volumes.volumes \
+from horizon_metadata_plugin.content.volumes.volumes \
     import tables as volume_tables
 
 

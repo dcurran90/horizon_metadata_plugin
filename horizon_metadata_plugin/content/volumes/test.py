@@ -22,11 +22,11 @@ from django.test.utils import override_settings
 from mox3.mox import IsA  # noqa
 
 from openstack_dashboard import api
-from openstack_dashboard.dashboards.project.volumes.backups \
+from horizon_metadata_plugin.content.volumes.backups \
     import tables as backup_tables
-from openstack_dashboard.dashboards.project.volumes.snapshots \
+from horizon_metadata_plugin.content.volumes.snapshots \
     import tables as snapshot_tables
-from openstack_dashboard.dashboards.project.volumes.volumes \
+from horizon_metadata_plugin.content.volumes.volumes \
     import tables as volume_tables
 from openstack_dashboard.test import helpers as test
 

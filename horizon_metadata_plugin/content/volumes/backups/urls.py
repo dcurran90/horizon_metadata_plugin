@@ -13,7 +13,7 @@
 from django.conf.urls import patterns
 from django.conf.urls import url
 
-from openstack_dashboard.dashboards.project.volumes.backups import views
+from horizon_metadata_plugin.content.volumes.backups import views
 
 
 VIEWS_MOD = ('openstack_dashboard.dashboards.project'

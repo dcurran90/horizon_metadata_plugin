@@ -20,11 +20,11 @@ from horizon import tabs
 from horizon.utils import memoized
 
 from openstack_dashboard import api
-from openstack_dashboard.dashboards.project.volumes.backups \
+from horizon_metadata_plugin.content.volumes.backups \
     import forms as backup_forms
-from openstack_dashboard.dashboards.project.volumes.backups \
+from horizon_metadata_plugin.content.volumes.backups \
     import tables as backup_tables
-from openstack_dashboard.dashboards.project.volumes.backups \
+from horizon_metadata_plugin.content.volumes.backups \
     import tabs as backup_tabs
 
 

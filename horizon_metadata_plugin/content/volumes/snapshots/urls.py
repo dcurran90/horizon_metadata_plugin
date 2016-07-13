@@ -13,7 +13,7 @@
 from django.conf.urls import patterns
 from django.conf.urls import url
 
-from openstack_dashboard.dashboards.project.volumes.snapshots import views
+from horizon_metadata_plugin.content.volumes.snapshots import views
 
 
 urlpatterns = patterns(
