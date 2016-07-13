@@ -1,0 +1,12 @@
+{% extends "horizon/common/_modal_form_metadata.html" %}
+{% load i18n %}
+
+{% block modal-body-metadata %}
+  {% include "horizon/common/_metadata.html"%}
+{% endblock %}
+
+{% block modal-body-right %}
+  <div class="quota-dynamic">
+    {% include "project/volumes/volumes/_limits.html" with usages=usages %}
+  </div>
+{% endblock %}

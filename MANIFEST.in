@@ -1,0 +1,3 @@
+include setup.py
+
+recursive-include horizon_metadata_plugin *.js *.html *.scss

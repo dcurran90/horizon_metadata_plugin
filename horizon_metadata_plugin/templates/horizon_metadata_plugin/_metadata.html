@@ -1,0 +1,77 @@
+{% load i18n %}
+
+<script>
+$(document).ready(function() {
+    var max_fields      = 10; //maximum input boxes allowed
+    var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+    var add_button      = $(".add_field_button"); //Add button ID
+
+    var x = 1; //initlal text box count
+    $(wrapper).on("click",".add_field_button", function(e){ //on add input button click
+        e.preventDefault();
+        if(x < max_fields){ //max input box allowed
+            x++; //text box increment
+            var meta_key = $('#id_metadata_key1').val();
+            var meta_value = $('#id_metadata_value1').val();
+            if(meta_key && meta_value) {
+            //$(wrapper).append('<div class="input-group"> <input  class="form-control" maxlength="255" type="text" name="metadata"/><span class="input-group-btn"><a href="" class="btn btn-default add_field_button"><span class="fa fa-plus"></span></a></span></div>'); //add input box
+                $(wrapper).append('<div class="input-group row"><div class="col-xs-5"><span class="hz-object-label">' + meta_key + '</span></div><div class="col-xs-5"><span class="hz-object-label">' + meta_value + '</span></div><div class="col-xs-2"><span class="input-group-btn"><a href="" class="btn btn-default remove_field"><span class="fa fa-minus"></span></a></span></div><input  class="form-control" maxlength="255" type="hidden" id="id_metadata_keys" name="metadata" value=\'{"'+ meta_key +'":"'+ meta_value +'"}\'/></div>');
+                $('#id_metadata_key1').val('');
+                $('#id_metadata_value1').val('');
+            }
+        }
+    });
+
+    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+        e.preventDefault(); 
+        //$(this).parent('div').remove(); 
+        $(this).closest(".input-group").remove();
+    })
+});
+</script>
+<noscript><h3>{{ step }}</h3></noscript>
+
+<div class="row">
+<div class="col-sm-12">
+<div class="form-group>
+    <label class="control-label" for="metadata">Metadata</label>
+    <div class="input_fields_wrap">
+        <div class="row">
+            <div class="col-xs-5"><label class="control-label">Key</label></div>
+            <div class="col-xs-5"><label class="control-label">Value</label></div>
+        </div>
+
+        <div class="input-group row">
+            <div class="col-xs-5"><input class="form-control" maxlength="255" type="text" id="id_metadata_key1" name="metadata_key1"></div>
+            <div class="col-xs-5"><input class="form-control" maxlength="255" type="text" id="id_metadata_value1" name="metadata_value1"></div>
+            <div class="col-xs-2">
+                <span class="input-group-btn">
+                    <a href="" class="btn btn-default add_field_button">
+                        <span class="fa fa-plus"></span>
+                    </a>
+                </span>
+            </div>
+        </div>
+
+    {%if form.metadata.value %}
+        {% for key, value in form.metadata.value.items  %}
+        <div class="input-group row">
+            <div class="col-xs-5"><span class="hz-object-label" for="metadata">{{ key }}</span></div>
+            <div class="col-xs-5"><span class="hz-object-label" for="metadata">{{ value }}</span></div>
+            <div class="col-xs-2">
+                <span class="input-group-btn">
+                    <a href="" class="btn btn-default remove_field">
+                        <span class="fa fa-minus"></span>
+                    </a>
+                </span>
+            </div>
+            <input  class="form-control" maxlength="255" type="hidden" id="id_metadata_keys" name="metadata" value='{"{{ key }}":"{{value}}"}'/>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    </div>
+</div>
+</div>
+</div>
+
