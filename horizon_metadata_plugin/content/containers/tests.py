@@ -29,10 +29,10 @@ from mox3.mox import IsA  # noqa
 import six
 
 from openstack_dashboard import api
-from openstack_dashboard.dashboards.project.containers import forms
-from openstack_dashboard.dashboards.project.containers import tables
-from openstack_dashboard.dashboards.project.containers import utils
-from openstack_dashboard.dashboards.project.containers import views
+from horizon_metadata_plugin.content.containers import forms
+from horizon_metadata_plugin.content.containers import tables
+from horizon_metadata_plugin.content.containers import utils
+from horizon_metadata_plugin.content.containers import views
 from openstack_dashboard.test import helpers as test
 
 CONTAINER_NAME_1 = u"container one%\u6346"

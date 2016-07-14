@@ -36,11 +36,11 @@ from horizon.utils import memoized
 
 from openstack_dashboard import api
 from openstack_dashboard.api import swift
-from openstack_dashboard.dashboards.project.containers \
+from horizon_metadata_plugin.content.containers \
     import browsers as project_browsers
-from openstack_dashboard.dashboards.project.containers \
+from horizon_metadata_plugin.content.containers \
     import forms as project_forms
-from openstack_dashboard.dashboards.project.containers import utils
+from horizon_metadata_plugin.content.containers import utils
 
 
 class NgIndexView(generic.TemplateView):

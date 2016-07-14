@@ -20,10 +20,10 @@ from django.conf import settings
 from django.conf.urls import patterns
 from django.conf.urls import url
 
-from openstack_dashboard.dashboards.project.containers import views
+from horizon_metadata_plugin.content.containers import views
 
 
-VIEW_MOD = 'openstack_dashboard.dashboards.project.containers.views'
+VIEW_MOD = 'horizon_metadata_plugin.content.containers.views'
 
 if settings.HORIZON_CONFIG['swift_panel'] == 'angular':
     # New angular containers and objects

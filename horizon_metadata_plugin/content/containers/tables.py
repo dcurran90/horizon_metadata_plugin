@@ -27,7 +27,7 @@ from horizon import tables
 
 from openstack_dashboard import api
 from openstack_dashboard.api import swift
-from openstack_dashboard.dashboards.project.containers import utils
+from horizon_metadata_plugin.content.containers import utils
 
 LOG = logging.getLogger(__name__)
 

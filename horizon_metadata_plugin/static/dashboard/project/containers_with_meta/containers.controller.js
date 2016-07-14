@@ -26,15 +26,15 @@
    * Controller for the interface around a list of containers for a single account.
    */
   angular
-    .module('horizon.dashboard.project.containers')
-    .controller('horizon.dashboard.project.containers.ContainersController', ContainersController);
+    .module('horizon.dashboard.project.containers_with_meta')
+    .controller('horizon.dashboard.project.containers_with_meta.ContainersController', ContainersController);
 
   ContainersController.$inject = [
     'horizon.app.core.openstack-service-api.swift',
-    'horizon.dashboard.project.containers.containers-model',
-    'horizon.dashboard.project.containers.basePath',
-    'horizon.dashboard.project.containers.baseRoute',
-    'horizon.dashboard.project.containers.containerRoute',
+    'horizon.dashboard.project.containers_with_meta.containers-model',
+    'horizon.dashboard.project.containers_with_meta.basePath',
+    'horizon.dashboard.project.containers_with_meta.baseRoute',
+    'horizon.dashboard.project.containers_with_meta.containerRoute',
     'horizon.framework.widgets.modal.simple-modal.service',
     'horizon.framework.widgets.toast.service',
     '$location',

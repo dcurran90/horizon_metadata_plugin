@@ -16,7 +16,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from horizon import browsers
 
-from openstack_dashboard.dashboards.project.containers import tables
+from horizon_metadata_plugin.content.containers import tables
 
 
 class ContainerBrowser(browsers.ResourceBrowser):

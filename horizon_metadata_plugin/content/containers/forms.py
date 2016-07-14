@@ -27,7 +27,7 @@ from horizon import forms
 from horizon import messages
 
 from openstack_dashboard import api
-from openstack_dashboard.dashboards.project.containers import utils
+from horizon_metadata_plugin.content.containers import utils
 
 
 no_slash_validator = validators.RegexValidator(r'^(?u)[^/]+$',
