@@ -17,11 +17,11 @@
 (function() {
   'use strict';
 
-  describe('horizon.dashboard.project.containers create-container controller', function() {
+  describe('horizon.dashboard.project.containers_with_meta create-container controller', function() {
     var controller;
 
     beforeEach(module('horizon.dashboard.project'));
-    beforeEach(module('horizon.dashboard.project.containers'));
+    beforeEach(module('horizon.dashboard.project.containers_with_meta'));
 
     beforeEach(inject(function ($injector) {
       controller = $injector.get('$controller');

@@ -26,15 +26,15 @@
    * Controller for the interface around the objects in a single container.
    */
   angular
-    .module('horizon.dashboard.project.containers')
-    .controller('horizon.dashboard.project.containers.ObjectsController', ObjectsController);
+    .module('horizon.dashboard.project.containers_with_meta')
+    .controller('horizon.dashboard.project.containers_with_meta.ObjectsController', ObjectsController);
 
   ObjectsController.$inject = [
     'horizon.app.core.openstack-service-api.swift',
-    'horizon.dashboard.project.containers.containers-model',
-    'horizon.dashboard.project.containers.containerRoute',
-    'horizon.dashboard.project.containers.basePath',
-    'horizon.dashboard.project.containers.objects-row-actions',
+    'horizon.dashboard.project.containers_with_meta.containers-model',
+    'horizon.dashboard.project.containers_with_meta.containerRoute',
+    'horizon.dashboard.project.containers_with_meta.basePath',
+    'horizon.dashboard.project.containers_with_meta.objects-row-actions',
     'horizon.framework.widgets.modal-wait-spinner.service',
     'horizon.framework.widgets.modal.simple-modal.service',
     'horizon.framework.widgets.toast.service',

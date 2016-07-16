@@ -13,7 +13,7 @@ ADD_INSTALLED_APPS = ['horizon_metadata_plugin']
 
 # A list of AngularJS modules to be loaded when Angular bootstraps.
 #ADD_ANGULAR_MODULES = ['horizon.dashboard.identity.myplugin.mypanel']
-#ADD_ANGULAR_MODULES = ['horizon.dashboard.project.containers_with_meta']
+ADD_ANGULAR_MODULES = ['horizon.dashboard.project.containers_with_meta']
 
 # Automatically discover static resources in installed apps
 AUTO_DISCOVER_STATIC_FILES = True

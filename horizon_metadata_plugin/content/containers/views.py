@@ -44,7 +44,7 @@ from horizon_metadata_plugin.content.containers import utils
 
 
 class NgIndexView(generic.TemplateView):
-    template_name = 'project/containers/ngindex.html'
+    template_name = 'project/containers_with_meta/ngindex.html'
 
 
 class ContainerView(browsers.ResourceBrowserView):

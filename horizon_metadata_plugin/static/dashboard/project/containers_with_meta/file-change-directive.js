@@ -17,7 +17,7 @@
   'use strict';
 
   angular
-    .module('horizon.dashboard.project.containers')
+    .module('horizon.dashboard.project.containers_with_meta')
     .directive('onFileChange', OnFileChange);
 
   OnFileChange.$inject = [];

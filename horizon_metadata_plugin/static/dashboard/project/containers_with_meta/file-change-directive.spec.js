@@ -16,8 +16,8 @@
 (function() {
   'use strict';
 
-  describe('horizon.dashboard.project.containers model', function() {
-    beforeEach(module('horizon.dashboard.project.containers'));
+  describe('horizon.dashboard.project.containers_with_meta model', function() {
+    beforeEach(module('horizon.dashboard.project.containers_with_meta'));
 
     var $compile, $scope;
 

@@ -17,15 +17,15 @@
 (function() {
   'use strict';
 
-  describe('horizon.dashboard.project.containers objects controller', function() {
+  describe('horizon.dashboard.project.containers_with_meta objects controller', function() {
     beforeEach(module('horizon.framework'));
     beforeEach(module('horizon.app.core.openstack-service-api'));
-    beforeEach(module('horizon.dashboard.project.containers'));
+    beforeEach(module('horizon.dashboard.project.containers_with_meta'));
     beforeEach(module(function before($provide) {
       $routeParams = {};
       $provide.value('$routeParams', $routeParams);
-      $provide.constant('horizon.dashboard.project.containers.basePath', '/base/path/');
-      $provide.constant('horizon.dashboard.project.containers.containerRoute', 'eggs/');
+      $provide.constant('horizon.dashboard.project.containers_with_meta.basePath', '/base/path/');
+      $provide.constant('horizon.dashboard.project.containers_with_meta.containerRoute', 'eggs/');
     }));
 
     var $modal, $q, $scope, $routeParams, controller, modalWaitSpinnerService, model,
@@ -39,7 +39,7 @@
       modalWaitSpinnerService = $injector.get(
         'horizon.framework.widgets.modal-wait-spinner.service'
       );
-      model = $injector.get('horizon.dashboard.project.containers.containers-model');
+      model = $injector.get('horizon.dashboard.project.containers_with_meta.containers-model');
       simpleModal = $injector.get('horizon.framework.widgets.modal.simple-modal.service');
       swiftAPI = $injector.get('horizon.app.core.openstack-service-api.swift');
       toast = $injector.get('horizon.framework.widgets.toast.service');
@@ -62,7 +62,7 @@
       $routeParams.container = 'spam';
       model.folder = $routeParams.folder = folder;
       return controller(
-        'horizon.dashboard.project.containers.ObjectsController',
+        'horizon.dashboard.project.containers_with_meta.ObjectsController',
         {$scope: $scope}
       );
     }

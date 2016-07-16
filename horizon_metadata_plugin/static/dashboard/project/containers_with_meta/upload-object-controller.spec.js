@@ -17,14 +17,14 @@
 (function() {
   'use strict';
 
-  describe('horizon.dashboard.project.containers upload-object controller', function() {
+  describe('horizon.dashboard.project.containers_with_meta upload-object controller', function() {
     var controller, $scope;
 
     beforeEach(module('horizon.framework'));
-    beforeEach(module('horizon.dashboard.project.containers'));
+    beforeEach(module('horizon.dashboard.project.containers_with_meta'));
 
     beforeEach(module(function ($provide) {
-      $provide.value('horizon.dashboard.project.containers.containers-model', {
+      $provide.value('horizon.dashboard.project.containers_with_meta.containers-model', {
         container: {name: 'spam'},
         folder: 'ham'
       });

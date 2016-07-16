@@ -17,11 +17,11 @@
   'use strict';
 
   angular
-    .module('horizon.dashboard.project.containers')
+    .module('horizon.dashboard.project.containers_with_meta')
     .controller('UploadObjectModalController', UploadObjectModalController);
 
   UploadObjectModalController.$inject = [
-    'horizon.dashboard.project.containers.containers-model',
+    'horizon.dashboard.project.containers_with_meta.containers-model',
     '$scope'
   ];
 

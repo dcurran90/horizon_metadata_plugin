@@ -18,17 +18,17 @@
   'use strict';
 
   angular
-    .module('horizon.dashboard.project.containers')
-    .factory('horizon.dashboard.project.containers.objects-row-actions', rowActions)
-    .factory('horizon.dashboard.project.containers.objects-actions.delete', deleteService)
-    .factory('horizon.dashboard.project.containers.objects-actions.download', downloadService)
-    .factory('horizon.dashboard.project.containers.objects-actions.view', viewService);
+    .module('horizon.dashboard.project.containers_with_meta')
+    .factory('horizon.dashboard.project.containers_with_meta.objects-row-actions', rowActions)
+    .factory('horizon.dashboard.project.containers_with_meta.objects-actions.delete', deleteService)
+    .factory('horizon.dashboard.project.containers_with_meta.objects-actions.download', downloadService)
+    .factory('horizon.dashboard.project.containers_with_meta.objects-actions.view', viewService);
 
   rowActions.$inject = [
-    'horizon.dashboard.project.containers.basePath',
-    'horizon.dashboard.project.containers.objects-actions.delete',
-    'horizon.dashboard.project.containers.objects-actions.download',
-    'horizon.dashboard.project.containers.objects-actions.view',
+    'horizon.dashboard.project.containers_with_meta.basePath',
+    'horizon.dashboard.project.containers_with_meta.objects-actions.delete',
+    'horizon.dashboard.project.containers_with_meta.objects-actions.download',
+    'horizon.dashboard.project.containers_with_meta.objects-actions.view',
     'horizon.framework.util.i18n.gettext'
   ];
 
@@ -83,8 +83,8 @@
 
   viewService.$inject = [
     'horizon.app.core.openstack-service-api.swift',
-    'horizon.dashboard.project.containers.basePath',
-    'horizon.dashboard.project.containers.containers-model',
+    'horizon.dashboard.project.containers_with_meta.basePath',
+    'horizon.dashboard.project.containers_with_meta.containers-model',
     'horizon.framework.util.q.extensions',
     '$modal'
   ];
@@ -118,7 +118,7 @@
   }
 
   deleteService.$inject = [
-    'horizon.dashboard.project.containers.containers-model',
+    'horizon.dashboard.project.containers_with_meta.containers-model',
     'horizon.framework.util.q.extensions',
     'horizon.framework.widgets.modal.simple-modal.service',
     'horizon.framework.widgets.toast.service'

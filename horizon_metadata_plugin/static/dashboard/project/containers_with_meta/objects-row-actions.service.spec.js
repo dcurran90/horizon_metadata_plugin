@@ -17,19 +17,19 @@
 (function() {
   'use strict';
 
-  describe('horizon.dashboard.project.containers objects row actions', function test() {
+  describe('horizon.dashboard.project.containers_with_meta objects row actions', function test() {
     beforeEach(module('horizon.app.core.openstack-service-api'));
     beforeEach(module('horizon.framework'));
     beforeEach(module('horizon.dashboard.project'));
     beforeEach(module(function before($provide) {
-      $provide.constant('horizon.dashboard.project.containers.basePath', '/base/path/');
+      $provide.constant('horizon.dashboard.project.containers_with_meta.basePath', '/base/path/');
     }));
 
     var rowActions, $rootScope, model;
 
     beforeEach(inject(function inject($injector, _$rootScope_) {
-      rowActions = $injector.get('horizon.dashboard.project.containers.objects-row-actions');
-      model = $injector.get('horizon.dashboard.project.containers.containers-model');
+      rowActions = $injector.get('horizon.dashboard.project.containers_with_meta.objects-row-actions');
+      model = $injector.get('horizon.dashboard.project.containers_with_meta.containers-model');
       $rootScope = _$rootScope_;
     }));
 
@@ -49,7 +49,7 @@
 
       beforeEach(inject(function inject($injector) {
         downloadService = $injector.get(
-          'horizon.dashboard.project.containers.objects-actions.download'
+          'horizon.dashboard.project.containers_with_meta.objects-actions.download'
         );
       }));
 
@@ -76,7 +76,7 @@
 
       beforeEach(inject(function inject($injector, _$modal_, _$q_) {
         swiftAPI = $injector.get('horizon.app.core.openstack-service-api.swift');
-        viewService = $injector.get('horizon.dashboard.project.containers.objects-actions.view');
+        viewService = $injector.get('horizon.dashboard.project.containers_with_meta.objects-actions.view');
         $modal = _$modal_;
         $q = _$q_;
       }));
@@ -126,7 +126,7 @@
 
       beforeEach(inject(function inject($injector, _$q_) {
         deleteService = $injector.get(
-          'horizon.dashboard.project.containers.objects-actions.delete'
+          'horizon.dashboard.project.containers_with_meta.objects-actions.delete'
         );
         simpleModal = $injector.get('horizon.framework.widgets.modal.simple-modal.service');
         toast = $injector.get('horizon.framework.widgets.toast.service');

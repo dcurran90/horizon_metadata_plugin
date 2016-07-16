@@ -1,5 +1,7 @@
 <div id="containers_wrapper" ng-controller="horizon.dashboard.project.containers.ContainersController as cc">
   <div class="col-md-3">
+
+
     <div class="row hz-container-actions">
       <div class="col-xs-12 hz-container-action">
         <button type="button" class="btn btn-default" ng-click="cc.createContainer()">
@@ -8,6 +10,7 @@
         </button>
       </div>
     </div>
+
 
     <div class="row">
       <div class="col-xs-12">
@@ -111,9 +114,15 @@
         </accordion>
       </div>
     </div>
+
+
   </div>
+
+
 
   <div class="col-md-9">
     <div ng-view class="objects_wrapper"></div>
   </div>
+
+
 </div>

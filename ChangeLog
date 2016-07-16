@@ -1,6 +1,8 @@
 CHANGES
 =======
 
+* moving enabled files around
+* changes for panels to work
 * trying changes for name and testing
 * fixing bugs/mkaing changes for volume to point to new plugin rather than horizon proper
 * first commit
