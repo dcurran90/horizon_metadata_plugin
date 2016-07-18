@@ -31,8 +31,8 @@ from horizon import tables as horizon_tables
 from openstack_dashboard import api
 from openstack_dashboard.test import helpers as test
 
-from openstack_dashboard.dashboards.project.images.images import forms
-from openstack_dashboard.dashboards.project.images.images import tables
+from horizon_metadata_plugin.content.images.images import forms
+from horizon_metadata_plugin.content.images.images import tables
 
 
 IMAGES_INDEX_URL = reverse('horizon:project:images:index')

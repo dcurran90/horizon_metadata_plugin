@@ -114,7 +114,7 @@
      *
      */
     function getContainer(container) {
-      return apiService.get(service.getContainerURL(container) + '/metadata/')
+      return apiService.get(service.getContainerURL(container) + '/update_metadata/')
         .error(function() {
           toastService.add('error', gettext('Unable to get the container details.'));
         });
@@ -182,7 +182,7 @@
       for (key in updated) {
           data["X-Container-Meta-" + key] = updated[key];
       }
-      return apiService.put(service.getContainerURL(container) + '/metadata/', data)
+      return apiService.put(service.getContainerURL(container) + '/update_metadata/', data)
         .error(function () {
           toastService.add('error', gettext('Unable to change the container metadata.'));
         });

@@ -17,6 +17,25 @@ CHUNK_SIZE = getattr(settings, 'SWIFT_FILE_TRANSFER_CHUNK_SIZE', 512 * 1024)
 GLOBAL_READ_ACL = ".r:*"
 LIST_CONTENTS_ACL = ".rlistings"
 
+
+class Container(base.APIDictWrapper):
+    pass
+
+
+@memoized
+def swift_api(request):
+    endpoint = base.url_for(request, 'object-store')
+    cacert = getattr(settings, 'OPENSTACK_SSL_CACERT', None)
+    insecure = getattr(settings, 'OPENSTACK_SSL_NO_VERIFY', False)
+    return swiftclient.client.Connection(None,
+                                         request.user.username,
+                                         None,
+                                         preauthtoken=request.user.token.id,
+                                         preauthurl=endpoint,
+                                         cacert=cacert,
+                                         insecure=insecure,
+                                         auth_version="2.0")
+
 def _metadata_to_header(metadata):
     headers = {}
     public = metadata.get('is_public')

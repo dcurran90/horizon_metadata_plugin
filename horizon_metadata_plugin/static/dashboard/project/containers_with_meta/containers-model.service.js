@@ -20,7 +20,7 @@
 
   /**
    * @ngdoc overview
-   * @name horizon.dashboard.project.containers
+   * @name horizon.dashboard.project.containers_with_meta
    *
    * @description
    * Provide a model for the display of containers.

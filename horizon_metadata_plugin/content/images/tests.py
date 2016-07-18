@@ -33,7 +33,7 @@ from horizon import exceptions
 from horizon import messages
 
 from openstack_dashboard import api
-from openstack_dashboard.dashboards.project.images import utils
+from horizon_metadata_plugin.content.images import utils
 from openstack_dashboard.test import helpers as test
 
 

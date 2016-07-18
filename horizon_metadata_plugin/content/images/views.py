@@ -28,7 +28,7 @@ from horizon import tables
 
 from openstack_dashboard import api
 
-from openstack_dashboard.dashboards.project.images.images \
+from horizon_metadata_plugin.content.images.images \
     import tables as images_tables
 
 

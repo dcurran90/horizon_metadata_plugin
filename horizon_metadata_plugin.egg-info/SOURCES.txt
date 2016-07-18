@@ -21,7 +21,6 @@ horizon_metadata_plugin/api/nova_with_meta.py
 horizon_metadata_plugin/api/swift_with_meta.py
 horizon_metadata_plugin/api/rest/__init__.py
 horizon_metadata_plugin/api/rest/cinder_with_meta.py
-horizon_metadata_plugin/api/rest/sample_network.py
 horizon_metadata_plugin/api/rest/swift_with_meta.py
 horizon_metadata_plugin/content/__init__.py
 horizon_metadata_plugin/content/containers/__init__.py
@@ -155,13 +154,6 @@ horizon_metadata_plugin/content/volumes/volumes/tests.py
 horizon_metadata_plugin/content/volumes/volumes/urls.py
 horizon_metadata_plugin/content/volumes/volumes/views.py
 horizon_metadata_plugin/enabled/_3100_add_container_meta_panel.py
-horizon_metadata_plugin/enabled/_3100_add_image_meta_panel.py
-horizon_metadata_plugin/enabled/_3100_add_volume_meta_panel.py
-horizon_metadata_plugin/enabled/old/_3100_horizon_metadata.py
-horizon_metadata_plugin/enabled/old/_3101_container_metadata.py
-horizon_metadata_plugin/enabled/old/_3101_images_metadata.py
-horizon_metadata_plugin/enabled/old/_3101_nova_metadata.py
-horizon_metadata_plugin/enabled/old/_3101_volumes_metadata.py
 horizon_metadata_plugin/static/app/core/metadata/metadata.module.js
 horizon_metadata_plugin/static/app/core/metadata/metadata.module.spec.js
 horizon_metadata_plugin/static/app/core/metadata/metadata.service.js

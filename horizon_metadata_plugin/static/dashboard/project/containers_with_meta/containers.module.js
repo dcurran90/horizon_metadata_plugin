@@ -19,7 +19,7 @@
 
   /**
    * @ngdoc overview
-   * @ngname horizon.dashboard.project.containers
+   * @ngname horizon.dashboard.project.containers_with_meta
    *
    * @description
    * Provides the services and widgets required
@@ -36,14 +36,14 @@
   ];
 
   /**
-   * @name horizon.dashboard.project.containers.basePath
+   * @name horizon.dashboard.project.containers_with_meta.basePath
    * @description Base path for the project dashboard
    */
   function config($provide, $routeProvider, $windowProvider) {
-    var path = $windowProvider.$get().STATIC_URL + 'dashboard/project/containers/';
+    var path = $windowProvider.$get().STATIC_URL + 'dashboard/project/containers_with_meta/';
     $provide.constant('horizon.dashboard.project.containers_with_meta.basePath', path);
 
-    var baseRoute = 'project/containers/';
+    var baseRoute = 'project/containers_with_meta/';
     $provide.constant('horizon.dashboard.project.containers_with_meta.baseRoute', baseRoute);
 
     var containerRoute = baseRoute + 'container/';

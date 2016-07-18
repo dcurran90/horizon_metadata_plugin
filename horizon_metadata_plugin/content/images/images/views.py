@@ -31,11 +31,11 @@ from horizon.utils import memoized
 from openstack_dashboard import api
 from openstack_dashboard.utils import filters
 
-from openstack_dashboard.dashboards.project.images.images \
+from horizon_metadata_plugin.content.images.images \
     import forms as project_forms
-from openstack_dashboard.dashboards.project.images.images \
+from horizon_metadata_plugin.content.images.images \
     import tables as project_tables
-from openstack_dashboard.dashboards.project.images.images \
+from horizon_metadata_plugin.content.images.images \
     import tabs as project_tabs
 
 

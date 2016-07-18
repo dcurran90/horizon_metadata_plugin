@@ -20,7 +20,7 @@
   /**
    * @ngdoc controller
    *
-   * @name horizon.dashboard.project.containers.ContainersController
+   * @name horizon.dashboard.project.containers_with_meta.ContainersController
    *
    * @description
    * Controller for the interface around a list of containers for a single account.

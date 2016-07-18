@@ -19,10 +19,10 @@
 from django.conf.urls import patterns
 from django.conf.urls import url
 
-from openstack_dashboard.dashboards.project.images.images import views
+from horizon_metadata_plugin.content.images.images import views
 
 
-VIEWS_MOD = 'openstack_dashboard.dashboards.project.images.images.views'
+VIEWS_MOD = 'horizon_metadata_plugin.content.images.images.views'
 
 
 urlpatterns = patterns(

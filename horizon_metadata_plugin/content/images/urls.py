@@ -20,11 +20,11 @@ from django.conf.urls import include
 from django.conf.urls import patterns
 from django.conf.urls import url
 
-from openstack_dashboard.dashboards.project.images.images \
+from horizon_metadata_plugin.content.images.images \
     import urls as image_urls
-from openstack_dashboard.dashboards.project.images.snapshots \
+from horizon_metadata_plugin.content.images.snapshots \
     import urls as snapshot_urls
-from openstack_dashboard.dashboards.project.images import views
+from horizon_metadata_plugin.content.images import views
 
 
 urlpatterns = patterns(

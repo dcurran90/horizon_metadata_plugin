@@ -29,7 +29,7 @@ from horizon.utils import memoized
 
 from openstack_dashboard import api
 
-from openstack_dashboard.dashboards.project.images.snapshots \
+from horizon_metadata_plugin.content.images.snapshots \
     import forms as project_forms
 
 

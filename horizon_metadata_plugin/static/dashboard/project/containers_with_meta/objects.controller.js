@@ -20,7 +20,7 @@
   /**
    * @ngdoc controller
    *
-   * @name horizon.dashboard.project.containers.ObjectsController
+   * @name horizon.dashboard.project.containers_with_meta.ObjectsController
    *
    * @description
    * Controller for the interface around the objects in a single container.

@@ -40,6 +40,36 @@ except ImportError:
     pass
 
 
+@memoized
+def cinderclient(request):
+    api_version = VERSIONS.get_active_version()
+
+    insecure = getattr(settings, 'OPENSTACK_SSL_NO_VERIFY', False)
+    cacert = getattr(settings, 'OPENSTACK_SSL_CACERT', None)
+    cinder_url = ""
+    try:
+        # The cinder client assumes that the v2 endpoint type will be
+        # 'volumev2'.
+        if api_version['version'] == 2:
+            try:
+                cinder_url = base.url_for(request, 'volumev2')
+            except exceptions.ServiceCatalogException:
+                LOG.warning("Cinder v2 requested but no 'volumev2' service "
+                            "type available in Keystone catalog.")
+    except exceptions.ServiceCatalogException:
+        LOG.debug('no volume service configured.')
+        raise
+    c = api_version['client'].Client(request.user.username,
+                                     request.user.token.id,
+                                     project_id=request.user.tenant_id,
+                                     auth_url=cinder_url,
+                                     insecure=insecure,
+                                     cacert=cacert,
+                                     http_log_debug=settings.DEBUG)
+    c.client.auth_token = request.user.token.id
+    c.client.management_url = cinder_url
+    return c
+
 
 def volume_metadata_update(request, volume_id, metadata):
     cinderclient(request).volumes.set_metadata(volume_id, metadata)
