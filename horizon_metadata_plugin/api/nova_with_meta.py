@@ -38,6 +38,23 @@ VOLUME_STATE_AVAILABLE = "available"
 DEFAULT_QUOTA_NAME = 'default'
 
 
+@memoized
+def novaclient(request):
+    insecure = getattr(settings, 'OPENSTACK_SSL_NO_VERIFY', False)
+    cacert = getattr(settings, 'OPENSTACK_SSL_CACERT', None)
+    c = nova_client.Client(VERSIONS.get_active_version()['version'],
+                           request.user.username,
+                           request.user.token.id,
+                           project_id=request.user.tenant_id,
+                           auth_url=base.url_for(request, 'compute'),
+                           insecure=insecure,
+                           cacert=cacert,
+                           http_log_debug=settings.DEBUG)
+    c.client.auth_token = request.user.token.id
+    c.client.management_url = base.url_for(request, 'compute')
+    return c
+
+
 def snapshot_create(request, instance_id, name, metadata):
     return novaclient(request).servers.create_image(instance_id, name, metadata)
 

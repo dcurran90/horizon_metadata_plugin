@@ -24,7 +24,7 @@ from horizon import forms
 from horizon import messages
 
 from openstack_dashboard import api
-
+from horizon_metadata_plugin.api import nova_with_meta 
 
 class CreateSnapshot(forms.SelfHandlingForm):
     instance_id = forms.CharField(label=_("Instance ID"),
@@ -36,7 +36,7 @@ class CreateSnapshot(forms.SelfHandlingForm):
         try:
             # NOTE(gabriel): This API call is only to display a pretty name.
             instance = api.nova.server_get(request, data['instance_id'])
-            snapshot = api.nova.snapshot_create(request,
+            snapshot = nova_with_meta.snapshot_create(request,
                                                 data['instance_id'],
                                                 data['name'],
                                                 instance.metadata)
