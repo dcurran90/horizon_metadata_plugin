@@ -91,7 +91,7 @@ class DetailView(tabs.TabView):
 class CreateView(forms.ModalFormView):
     form_class = project_forms.CreateForm
     modal_header = _("Create Volume")
-    template_name = 'project/horizon_metadata_plugin/volumes/create.html'
+    template_name = 'project/volumes/volumes/create.html'
     submit_label = _("Create Volume")
     submit_url = reverse_lazy("horizon:project:volumes:volumes:create")
     success_url = reverse_lazy('horizon:project:volumes:volumes_tab')
