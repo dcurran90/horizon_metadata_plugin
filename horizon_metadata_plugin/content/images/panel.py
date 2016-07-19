@@ -19,6 +19,6 @@ import horizon
 
 
 class Images(horizon.Panel):
-    name = _("Images DANIEL")
+    name = _("Images")
     slug = 'images'
     permissions = ('openstack.services.image',)
