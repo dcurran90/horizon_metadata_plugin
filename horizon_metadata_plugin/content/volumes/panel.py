@@ -18,7 +18,7 @@ import horizon
 
 
 class Volumes(horizon.Panel):
-    name = _("Volumes DANIEL")
+    name = _("Volumes")
     slug = 'volumes'
     permissions = (
         ('openstack.services.volume', 'openstack.services.volumev2'),
