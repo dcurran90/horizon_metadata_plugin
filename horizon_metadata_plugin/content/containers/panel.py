@@ -22,6 +22,6 @@ import horizon
 
 
 class Containers(horizon.Panel):
-    name = _("Containers DANIEL")
+    name = _("Containers")
     slug = 'containers_with_meta'
     permissions = ('openstack.services.object-store',)
