@@ -133,7 +133,7 @@ class PagedTableMixin(object):
 
 class VolumeTab(PagedTableMixin, tabs.TableTab, VolumeTableMixIn):
     table_classes = (volume_tables.VolumesTable,)
-    name = _("Volumes DANIEL")
+    name = _("Volumes")
     slug = "volumes_tab"
     template_name = ("horizon/common/_detail_table.html")
     preload = False
