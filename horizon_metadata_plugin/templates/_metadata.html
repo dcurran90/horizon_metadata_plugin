@@ -15,7 +15,7 @@ $(document).ready(function() {
             var meta_value = $('#id_metadata_value1').val();
             if(meta_key && meta_value) {
             //$(wrapper).append('<div class="input-group"> <input  class="form-control" maxlength="255" type="text" name="metadata"/><span class="input-group-btn"><a href="" class="btn btn-default add_field_button"><span class="fa fa-plus"></span></a></span></div>'); //add input box
-                $(wrapper).append('<div class="input-group row"><div class="col-xs-5"><span class="hz-object-label">' + meta_key + '</span></div><div class="col-xs-5"><span class="hz-object-label">' + meta_value + '</span></div><div class="col-xs-2"><span class="input-group-btn"><a href="" class="btn btn-default remove_field"><span class="fa fa-minus"></span></a></span></div><input  class="form-control" maxlength="255" type="hidden" id="id_metadata_keys" name="metadata" value=\'{"'+ meta_key +'":"'+ meta_value +'"}\'/></div>');
+                $(wrapper).append('<div class="row"><div class="col-xs-5"><span class="hz-object-label">' + meta_key + '</span></div><div class="col-xs-5"><span class="hz-object-label">' + meta_value + '</span></div><div class="col-xs-2"><span class="input-group-btn"><a href="" class="btn btn-default remove_field"><span class="fa fa-minus"></span></a></span></div><input  class="form-control" maxlength="255" type="hidden" id="id_metadata_keys" name="metadata" value=\'{"'+ meta_key +'":"'+ meta_value +'"}\'/></div>');
                 $('#id_metadata_key1').val('');
                 $('#id_metadata_value1').val('');
             }
@@ -55,7 +55,7 @@ $(document).ready(function() {
 
     {%if form.metadata.value %}
         {% for key, value in form.metadata.value.items  %}
-        <div class="input-group row">
+        <div class="row">
             <div class="col-xs-5"><span class="hz-object-label" for="metadata">{{ key }}</span></div>
             <div class="col-xs-5"><span class="hz-object-label" for="metadata">{{ value }}</span></div>
             <div class="col-xs-2">
