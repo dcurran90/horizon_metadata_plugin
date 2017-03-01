@@ -30,7 +30,11 @@
     <dt>{% trans "Bootable" %}</dt>
     <dd>{{ volume.is_bootable|yesno|capfirst }}</dd>
     <dt>{% trans "Encrypted" %}</dt>
-    <dd><a href="{% url 'horizon:project:volumes:volumes:encryption_detail' volume.id %}">{{ volume.encrypted|yesno:_("yes,no,-")|capfirst }}</a></dd>
+    {% if volume.encrypted %}
+    <dd><a href="{% url 'horizon:project:volumes:volumes:encryption_detail' volume.id %}">{% trans "Yes" %}</a></dd>
+    {% else %}
+    <dd>{% trans "No" %}</dd>
+    {% endif %}
     <dt>{% trans "Created" context "Created time" %}</dt>
     <dd>{{ volume.created_at|parse_date }}</dd>
   </dl>
@@ -42,7 +46,7 @@
     <dt>{% trans "Attached To" %}</dt>
     <dd>
       {% url 'horizon:project:instances:detail' attachment.server_id as instance_url %}
-      {% blocktrans with instance_name=attachment.instance.name device=attachment.device %}
+      {% blocktrans trimmed with instance_name=attachment.instance.name device=attachment.device %}
       <a href="{{ instance_url }}">{{ instance_name }}</a> on {{ device }}
       {% endblocktrans %}
     </dd>

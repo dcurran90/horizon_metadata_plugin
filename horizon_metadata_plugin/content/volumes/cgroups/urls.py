@@ -10,24 +10,34 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from django.conf.urls import patterns
 from django.conf.urls import url
 
 from horizon_metadata_plugin.content.volumes.cgroups import views
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^create/$',
         views.CreateView.as_view(),
         name='create'),
     url(r'^(?P<cgroup_id>[^/]+)/update/$',
         views.UpdateView.as_view(),
         name='update'),
+    url(r'^(?P<cgroup_id>[^/]+)/remove_volumese/$',
+        views.RemoveVolumesView.as_view(),
+        name='remove_volumes'),
+    url(r'^(?P<cgroup_id>[^/]+)/delete/$',
+        views.DeleteView.as_view(),
+        name='delete'),
     url(r'^(?P<cgroup_id>[^/]+)/manage/$',
         views.ManageView.as_view(),
         name='manage'),
+    url(r'^(?P<cgroup_id>[^/]+)/create_snapshot/$',
+        views.CreateSnapshotView.as_view(),
+        name='create_snapshot'),
+    url(r'^(?P<cgroup_id>[^/]+)/clone_cgroup/$',
+        views.CloneCGroupView.as_view(),
+        name='clone_cgroup'),
     url(r'^(?P<cgroup_id>[^/]+)$',
         views.DetailView.as_view(),
         name='detail'),
-)
+]

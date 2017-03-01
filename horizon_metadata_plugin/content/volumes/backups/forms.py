@@ -42,9 +42,6 @@ class CreateBackupForm(forms.SelfHandlingForm):
     volume_id = forms.CharField(widget=forms.HiddenInput())
 
     def handle(self, request, data):
-        # Create a container for the user if no input is given
-        if not data['container_name']:
-            data['container_name'] = 'volumebackups'
 
         try:
             backup = api.cinder.volume_backup_create(request,
@@ -54,7 +51,7 @@ class CreateBackupForm(forms.SelfHandlingForm):
                                                      data['description'])
 
             message = _('Creating volume backup "%s"') % data['name']
-            messages.success(request, message)
+            messages.info(request, message)
             return backup
 
         except Exception:
@@ -65,7 +62,8 @@ class CreateBackupForm(forms.SelfHandlingForm):
 
 
 class RestoreBackupForm(forms.SelfHandlingForm):
-    volume_id = forms.ChoiceField(label=_('Select Volume'), required=False)
+    volume_id = forms.ThemableChoiceField(label=_('Select Volume'),
+                                          required=False)
     backup_id = forms.CharField(widget=forms.HiddenInput())
     backup_name = forms.CharField(widget=forms.HiddenInput())
 
@@ -98,10 +96,11 @@ class RestoreBackupForm(forms.SelfHandlingForm):
             # Needed for cases when a new volume is created.
             volume_id = restore.volume_id
 
-            message = _('Successfully restored backup %(backup_name)s '
-                        'to volume with id: %(volume_id)s')
-            messages.success(request, message % {'backup_name': backup_name,
-                                                 'volume_id': volume_id})
+            message = _('Request for restoring backup %(backup_name)s '
+                        'to volume with id: %(volume_id)s '
+                        'has been submitted.')
+            messages.info(request, message % {'backup_name': backup_name,
+                                              'volume_id': volume_id})
             return restore
         except Exception:
             msg = _('Unable to restore backup.')

@@ -20,8 +20,13 @@ import json
 
 from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
+from django import http
+from django.template.defaultfilters import slugify  # noqa
+from django.utils.decorators import method_decorator
 from django.utils import encoding
 from django.utils.translation import ugettext_lazy as _
+from django.views.decorators.cache import cache_control
+from django.views.decorators.cache import never_cache
 from django.views import generic
 
 from horizon import exceptions
@@ -117,6 +122,7 @@ class CreateView(forms.ModalFormView):
         return context
 
     def _get_volume_types(self):
+        volume_types = []
         try:
             volume_types = cinder.volume_type_list(self.request)
         except Exception:
@@ -133,7 +139,7 @@ class CreateView(forms.ModalFormView):
 
             no_type_description = encoding.force_text(message)
 
-        type_descriptions = [{'name': 'no_type',
+        type_descriptions = [{'name': '',
                               'description': no_type_description}] + \
                             [{'name': type.name,
                               'description': getattr(type, "description", "")}
@@ -296,6 +302,7 @@ class ShowTransferView(forms.ModalFormView):
     modal_header = _("Volume Transfer")
     submit_url = "horizon:project:volumes:volumes:show_transfer"
     cancel_label = _("Close")
+    download_label = _("Download transfer credentials")
     page_title = _("Volume Transfer Details")
 
     def get_object(self):
@@ -316,6 +323,11 @@ class ShowTransferView(forms.ModalFormView):
         context['auth_key'] = self.kwargs['auth_key']
         context['submit_url'] = reverse(self.submit_url, args=[
             context['transfer_id'], context['auth_key']])
+        context['download_label'] = self.download_label
+        context['download_url'] = reverse(
+            'horizon:project:volumes:volumes:download_transfer_creds',
+            args=[context['transfer_id'], context['auth_key']]
+        )
         return context
 
     def get_initial(self):
@@ -519,3 +531,28 @@ class EncryptionDetailView(generic.TemplateView):
 
     def get_redirect_url(self):
         return reverse('horizon:project:volumes:index')
+
+
+class DownloadTransferCreds(generic.View):
+    # TODO(Itxaka): Remove cache_control in django >= 1.9
+    # https://code.djangoproject.com/ticket/13008
+    @method_decorator(cache_control(max_age=0, no_cache=True,
+                                    no_store=True, must_revalidate=True))
+    @method_decorator(never_cache)
+    def get(self, request, transfer_id, auth_key):
+        try:
+            transfer = cinder.transfer_get(self.request, transfer_id)
+        except Exception:
+            transfer = None
+        response = http.HttpResponse(content_type='application/text')
+        response['Content-Disposition'] = \
+            'attachment; filename=%s.txt' % slugify(transfer_id)
+        response.write('%s: %s\n%s: %s\n%s: %s' % (
+            _("Transfer name"),
+            getattr(transfer, 'name', ''),
+            _("Transfer ID"),
+            transfer_id,
+            _("Authorization Key"),
+            auth_key))
+        response['Content-Length'] = str(len(response.content))
+        return response

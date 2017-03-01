@@ -12,14 +12,13 @@
 
 from django.conf.urls import url
 
-from horizon_metadata_plugin.content.volumes.snapshots import views
-
+from openstack_dashboard.dashboards.project.volumes.cg_snapshots import views
 
 urlpatterns = [
-    url(r'^(?P<snapshot_id>[^/]+)$',
+    url(r'^(?P<cg_snapshot_id>[^/]+)/cg_snapshot_detail/$',
         views.DetailView.as_view(),
-        name='detail'),
-    url(r'^(?P<snapshot_id>[^/]+)/update/$',
-        views.UpdateView.as_view(),
-        name='update'),
+        name='cg_snapshot_detail'),
+    url(r'^(?P<cg_snapshot_id>[^/]+)/create_cgroup/$',
+        views.CreateCGroupView.as_view(),
+        name='create_cgroup'),
 ]

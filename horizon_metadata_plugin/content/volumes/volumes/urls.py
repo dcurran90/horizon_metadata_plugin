@@ -12,7 +12,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from django.conf.urls import patterns
 from django.conf.urls import url
 
 from horizon_metadata_plugin.content.volumes \
@@ -20,10 +19,9 @@ from horizon_metadata_plugin.content.volumes \
 from horizon_metadata_plugin.content.volumes.backups \
     import views as backup_views
 
-
 VIEWS_MOD = ('horizon_metadata_plugin.content.volumes.volumes.views')
 
-urlpatterns = patterns(
+urlpatterns = [
     VIEWS_MOD,
     url(r'^create/$', views.CreateView.as_view(), name='create'),
     url(r'^(?P<volume_id>[^/]+)/extend/$',
@@ -62,4 +60,7 @@ urlpatterns = patterns(
     url(r'^(?P<volume_id>[^/]+)/encryption_detail/$',
         views.EncryptionDetailView.as_view(),
         name='encryption_detail'),
-)
+    url(r'^(?P<transfer_id>[^/]+)/download_creds/(?P<auth_key>[^/]+)$',
+        views.DownloadTransferCreds.as_view(),
+        name='download_transfer_creds'),
+]

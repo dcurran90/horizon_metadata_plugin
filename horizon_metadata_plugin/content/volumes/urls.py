@@ -13,11 +13,12 @@
 #    under the License.
 
 from django.conf.urls import include
-from django.conf.urls import patterns
 from django.conf.urls import url
 
 from horizon_metadata_plugin.content.volumes.backups \
     import urls as backups_urls
+from horizon_metadata_plugin.content.volumes.cg_snapshots \
+    import urls as cg_snapshots_urls
 from horizon_metadata_plugin.content.volumes.cgroups \
     import urls as cgroup_urls
 from horizon_metadata_plugin.content.volumes.snapshots \
@@ -26,8 +27,7 @@ from horizon_metadata_plugin.content.volumes import views
 from horizon_metadata_plugin.content.volumes.volumes \
     import urls as volume_urls
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^\?tab=volumes_and_snapshots__snapshots_tab$',
         views.IndexView.as_view(), name='snapshots_tab'),
@@ -37,8 +37,21 @@ urlpatterns = patterns(
         views.IndexView.as_view(), name='backups_tab'),
     url(r'^\?tab=volumes_and_snapshots__cgroups_tab$',
         views.IndexView.as_view(), name='cgroups_tab'),
-    url(r'', include(volume_urls, namespace='volumes')),
-    url(r'backups/', include(backups_urls, namespace='backups')),
-    url(r'snapshots/', include(snapshot_urls, namespace='snapshots')),
-    url(r'cgroups/', include(cgroup_urls, namespace='cgroups')),
-)
+    url(r'^\?tab=volumes_and_snapshots__cg_snapshots_tab$',
+        views.IndexView.as_view(), name='cg_snapshots_tab'),
+    url(r'', include(
+        volume_urls,
+        namespace='volumes')),
+    url(r'backups/', include(
+        backups_urls,
+        namespace='backups')),
+    url(r'snapshots/', include(
+        snapshot_urls,
+        namespace='snapshots')),
+    url(r'cgroups/', include(
+        cgroup_urls,
+        namespace='cgroups')),
+    url(r'cg_snapshots/', include(
+        cg_snapshots_urls,
+        namespace='cg_snapshots')),
+]
