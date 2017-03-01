@@ -17,7 +17,6 @@
 #    under the License.
 
 from django.conf import settings
-from django.conf.urls import patterns
 from django.conf.urls import url
 
 from horizon_metadata_plugin.content.containers import views
@@ -29,14 +28,14 @@ if settings.HORIZON_CONFIG['swift_panel'] == 'angular':
     # New angular containers and objects
     urlpatterns = [
         url(r'^container/((?P<container_name>.+?)/)?'
-            '(?P<subfolder_path>(.+/)+)?$',
+            '(?P<subfolder_path>.+)?$',
             views.NgIndexView.as_view(), name='index'),
         url(r'^$',
             views.NgIndexView.as_view(), name='index')
     ]
 else:
     # Legacy swift containers and objects
-    urlpatterns = patterns(
+    urlpatterns = [
         VIEW_MOD,
         url(r'^((?P<container_name>.+?)/)?(?P<subfolder_path>(.+/)+)?$',
             views.ContainerView.as_view(), name='index'),
@@ -75,6 +74,6 @@ else:
             name='object_copy'),
 
         url(r'^(?P<container_name>[^/]+)/(?P<object_path>.+)/download$',
-            'object_download',
+            views.object_download,
             name='object_download'),
-    )
+    ]
