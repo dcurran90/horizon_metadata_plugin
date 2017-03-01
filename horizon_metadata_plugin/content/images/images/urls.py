@@ -19,7 +19,7 @@
 from django.conf import settings
 from django.conf.urls import url
 from horizon_metadata_plugin.content.images.images import views
-
+from horizon_metadata_plugin.content.images import views as imgviews
 
 VIEWS_MOD = 'horizon_metadata_plugin.content.images.images.views'
 
