@@ -21,9 +21,6 @@
     var testCall, service;
     var apiService = {};
     var toastService = {};
-    var fakeFormData = {
-      append: angular.noop
-    };
 
     beforeEach(
       module('horizon.mock.openstack-service-api',
@@ -36,7 +33,6 @@
 
     beforeEach(inject(['horizon.app.core.openstack-service-api.swift', function(swiftAPI) {
       service = swiftAPI;
-      spyOn(service, 'formData').and.returnValue(fakeFormData);
     }]));
 
     it('defines the service', function() {
@@ -123,8 +119,7 @@
         method: 'post',
         call_args: [
           '/api/swift/containers/spam/object/ham',
-          fakeFormData,
-          {headers: {'Content-Type': undefined}}
+          {file: 'some junk'}
         ],
         error: 'Unable to upload the object.',
         testInput: [ 'spam', 'ham', 'some junk' ]
@@ -170,7 +165,35 @@
       });
     });
 
-    it('returns a better error message when delete is prevented', function test() {
+    it('returns a relevant error message when createFolder returns a 409 error', function test() {
+      var promise = {error: angular.noop};
+      spyOn(apiService, 'post').and.returnValue(promise);
+      spyOn(promise, 'error');
+      service.createFolder('spam', 'ham');
+      spyOn(toastService, 'add');
+      var innerFunc = promise.error.calls.argsFor(0)[0];
+      // In the case of 409
+      var message = 'A pseudo-folder with the name "ham" already exists.';
+      innerFunc(message, 409);
+      expect(toastService.add).toHaveBeenCalledWith('error', message);
+    });
+
+    it('returns a relevant error message when deleteContainer returns a 409 error',
+      function test() {
+        var promise = {error: angular.noop};
+        spyOn(apiService, 'delete').and.returnValue(promise);
+        spyOn(promise, 'error');
+        service.deleteContainer('spam', 'ham');
+        spyOn(toastService, 'add');
+        var innerFunc = promise.error.calls.argsFor(0)[0];
+        // In the case of 409
+        var message = 'Unable to delete the container because it is not empty.';
+        innerFunc(message, 409);
+        expect(toastService.add).toHaveBeenCalledWith('error', message);
+      }
+    );
+
+    it('returns a relevant error message when deleteObject returns a 409 error', function test() {
       var promise = {error: angular.noop};
       spyOn(apiService, 'delete').and.returnValue(promise);
       spyOn(promise, 'error');
@@ -181,7 +204,7 @@
       var innerFunc = promise.error.calls.argsFor(0)[0];
       expect(innerFunc).toBeDefined();
       spyOn(toastService, 'add');
-      innerFunc('whatever', 409);
+      innerFunc({status: 409});
       expect(toastService.add).toHaveBeenCalledWith(
         'error',
         'Unable to delete the folder because it is not empty.'

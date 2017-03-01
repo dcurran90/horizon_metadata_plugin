@@ -20,27 +20,28 @@
     .factory('horizon.app.core.openstack-service-api.policy', PolicyService);
 
   PolicyService.$inject = [
-    '$cacheFactory',
     '$q',
+    'horizon.framework.util.filters.$memoize',
     'horizon.framework.util.http.service',
     'horizon.framework.widgets.toast.service'
   ];
 
   /**
    * @ngdoc service
-   * @name horizon.app.core.openstack-service-api.policy
+   * @name PolicyService
+   * @param {Object} $q
+   * @param {Object} memoize
+   * @param {Object} apiService
+   * @param {Object} toastService
    * @description Provides a direct pass through to the policy engine in
    * Horizon.
+   * @returns {Object} The service
    */
-  function PolicyService($cacheFactory, $q, apiService, toastService) {
+  function PolicyService($q, memoize, apiService, toastService) {
 
     var service = {
-      cache: $cacheFactory(
-        'horizon.app.core.openstack-service-api.policy',
-        {capacity: 200}
-      ),
-      check: check,
-      ifAllowed: ifAllowed
+      check: memoize(check, memoizeHasher),
+      ifAllowed: memoize(ifAllowed, memoizeHasher)
     };
 
     return service;
@@ -48,7 +49,8 @@
     //////////////
 
     /**
-     * @name horizon.app.core.openstack-service-api.policy.check
+     * @name check
+     * @param {Object} policyRules
      * @description
      * Check the passed in policy rule list to determine if the user has
      * permission to perform the actions specified by the rules. The service
@@ -83,28 +85,22 @@
      *   {
      *     "allowed": false
      *   }
+     * @returns {Object} The result of the API call
      */
     function check(policyRules) {
       // Return a deferred and map then to success since legacy angular http uses success.
       // The .error is already overriden in this function to just display toast, so this should
       // work the same as if only success was returned.
       var deferred = $q.defer();
-      var cacheId = angular.toJson(policyRules);
-      var cachedData = service.cache.get(cacheId);
 
-      if (cachedData) {
-        deferred.resolve(cachedData);
-      } else {
-        apiService.post('/api/policy/', policyRules)
-          .success(function successPath(result) {
-            service.cache.put(cacheId, result);
-            deferred.resolve(result);
-          })
-          .error(function failurePath(result) {
-            toastService.add('warning', gettext('Policy check failed.'));
-            deferred.reject(result);
-          });
-      }
+      apiService.post('/api/policy/', policyRules)
+        .success(function successPath(result) {
+          deferred.resolve(result);
+        })
+        .error(function failurePath(result) {
+          toastService.add('warning', gettext('Policy check failed.'));
+          deferred.reject(result);
+        });
 
       deferred.promise.success = deferred.promise.then;
       return deferred.promise;
@@ -112,6 +108,7 @@
 
     /**
      * @name ifAllowed
+     * @param {Object} policyRules
      * @description
      * Wrapper function for check that returns a deferred promise.
      * Resolves if the response is allowed, rejects otherwise.
@@ -125,6 +122,7 @@
      ```js
      policyService.ifAllowed(myRules).then(deleteObject, doSomethingElse);
      ```
+     * @returns {promise} A promise resolving if true, rejecting if not
      */
     function ifAllowed(policyRules) {
       var deferred = $q.defer();
@@ -138,6 +136,10 @@
           deferred.reject();
         }
       }
+    }
+
+    function memoizeHasher(policyRules) {
+      return angular.toJson(policyRules);
     }
   }
 }());

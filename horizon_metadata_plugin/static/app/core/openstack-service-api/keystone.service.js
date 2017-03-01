@@ -21,11 +21,12 @@
     .factory('horizon.app.core.openstack-service-api.keystone', keystoneAPI);
 
   keystoneAPI.$inject = [
+    '$q',
     'horizon.framework.util.http.service',
     'horizon.framework.widgets.toast.service'
   ];
 
-  function keystoneAPI(apiService, toastService) {
+  function keystoneAPI($q, apiService, toastService) {
     var service = {
       getVersion: getVersion,
       getUsers: getUsers,
@@ -51,6 +52,7 @@
       createProject: createProject,
       deleteProjects: deleteProjects,
       getProject: getProject,
+      getProjectName: getProjectName,
       editProject: editProject,
       deleteProject: deleteProject,
       grantRole: grantRole,
@@ -101,7 +103,8 @@
     }
 
     /**
-    * @name horizon.app.core.openstack-service-api.keystone.getCurrentUserSession
+    * @name getCurrentUserSession
+    * @param {Object} config - The configuration for which we want a session
     * @description
     * Gets the current User Session Information
     * @example
@@ -126,6 +129,7 @@
     * "user_domain_name": "Default",
     * "username": "admin"
     * }
+    * @returns {Object} The result of the API call
     */
     function getCurrentUserSession(config) {
       return apiService.get('/api/keystone/user-session/', config)
@@ -275,6 +279,31 @@
         });
     }
 
+    /**
+     * @name getProjectName
+     * @description
+     * Returns the requested project name or id if the project doesn't have a name.
+     * @param {string} projectId
+     * The project to get
+     * @returns {string} The result of the API call
+     */
+    function getProjectName(projectId) {
+      var deferred = $q.defer();
+
+      service.getProject(projectId)
+        .then(onSuccess, onFailure);
+
+      function onSuccess(response) {
+        deferred.resolve(response.data.name || response.data.id);
+      }
+
+      function onFailure(message) {
+        deferred.reject(message);
+      }
+
+      return deferred.promise;
+    }
+
     function editProject(updatedProject) {
       var url = '/api/keystone/projects/' + updatedProject.id;
       return apiService.patch(url, updatedProject)
@@ -299,11 +328,12 @@
     }
 
     /**
-     * @name horizon.app.core.openstack-service-api.keystone.serviceCatalog
+     * @name serviceCatalog
      * @description
      * Returns the service catalog.
      * @param {Object} config
      * See $http config object parameters.
+     * @returns {Object} The result of the API call
      */
     function serviceCatalog(config) {
       return apiService.get('/api/keystone/svc-catalog/', config)
