@@ -16,8 +16,8 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from django.conf import settings
 from django.conf.urls import include
-from django.conf.urls import patterns
 from django.conf.urls import url
 
 from horizon_metadata_plugin.content.images.images \
@@ -27,9 +27,16 @@ from horizon_metadata_plugin.content.images.snapshots \
 from horizon_metadata_plugin.content.images import views
 
 
-urlpatterns = patterns(
-    '',
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    url(r'', include(image_urls, namespace='images')),
-    url(r'', include(snapshot_urls, namespace='snapshots')),
-)
+if settings.ANGULAR_FEATURES['images_panel']:
+    # New angular images
+    urlpatterns = [
+        url(r'^$', views.AngularIndexView.as_view(), name='index'),
+        url(r'', include(image_urls, namespace='images')),
+        url(r'', include(snapshot_urls, namespace='snapshots')),
+    ]
+else:
+    urlpatterns = [
+        url(r'^$', views.IndexView.as_view(), name='index'),
+        url(r'', include(image_urls, namespace='images')),
+        url(r'', include(snapshot_urls, namespace='snapshots')),
+    ]

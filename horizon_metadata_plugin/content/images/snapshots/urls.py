@@ -16,15 +16,13 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from django.conf.urls import patterns
 from django.conf.urls import url
 
 from horizon_metadata_plugin.content.images.snapshots import views
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^(?P<instance_id>[^/]+)/create/$',
         views.CreateView.as_view(),
         name='create')
-)
+]

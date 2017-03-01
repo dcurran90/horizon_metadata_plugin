@@ -16,19 +16,24 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from django.conf.urls import patterns
+from django.conf import settings
 from django.conf.urls import url
-
 from horizon_metadata_plugin.content.images.images import views
 
 
 VIEWS_MOD = 'horizon_metadata_plugin.content.images.images.views'
 
-
-urlpatterns = patterns(
-    VIEWS_MOD,
-    url(r'^create/$', views.CreateView.as_view(), name='create'),
-    url(r'^(?P<image_id>[^/]+)/update/$',
-        views.UpdateView.as_view(), name='update'),
-    url(r'^(?P<image_id>[^/]+)/$', views.DetailView.as_view(), name='detail'),
-)
+if settings.ANGULAR_FEATURES['images_panel']:
+    urlpatterns = [
+        url(r'^(?P<image_id>[^/]+)/$', imgviews.AngularIndexView.as_view(),
+            name='detail'),
+    ]
+else:
+    urlpatterns = [
+        VIEWS_MOD,
+        url(r'^create/$', views.CreateView.as_view(), name='create'),
+        url(r'^(?P<image_id>[^/]+)/update/$',
+            views.UpdateView.as_view(), name='update'),
+        url(r'^(?P<image_id>[^/]+)/$', views.DetailView.as_view(),
+            name='detail'),
+    ]

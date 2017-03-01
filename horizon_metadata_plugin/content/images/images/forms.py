@@ -26,6 +26,7 @@ from django.forms import ValidationError  # noqa
 from django.forms.widgets import HiddenInput  # noqa
 from django.template import defaultfilters
 from django.utils.translation import ugettext_lazy as _
+import six
 
 from horizon import exceptions
 from horizon import forms
@@ -65,29 +66,47 @@ def create_image_metadata(data):
     else:
         container_format = 'bare'
 
-    # The Create form uses 'is_public' but the Update form uses 'public'. Just
-    # being tolerant here so we don't break anything else.
-    meta = {'is_public': data.get('is_public', data.get('public', False)),
-            'protected': data['protected'],
+    meta = {'protected': data['protected'],
             'disk_format': disk_format,
             'container_format': container_format,
             'min_disk': (data['minimum_disk'] or 0),
             'min_ram': (data['minimum_ram'] or 0),
-            'name': data['name'],
-            'properties': {}}
+            'name': data['name']}
 
-    if 'description' in data:
-        meta['properties']['description'] = data['description']
+    is_public = data.get('is_public', data.get('public', False))
+    properties = {}
+    # NOTE(tsufiev): in V2 the way how empty non-base attributes (AKA metadata)
+    # are handled has changed: in V2 empty metadata is kept in image
+    # properties, while in V1 they were omitted. Skip empty description (which
+    # is metadata) to keep the same behavior between V1 and V2
+    if data.get('description'):
+        properties['description'] = data['description']
     if data.get('kernel'):
-        meta['properties']['kernel_id'] = data['kernel']
+        properties['kernel_id'] = data['kernel']
     if data.get('ramdisk'):
-        meta['properties']['ramdisk_id'] = data['ramdisk']
+        properties['ramdisk_id'] = data['ramdisk']
     if data.get('architecture'):
-        meta['properties']['architecture'] = data['architecture']
+        properties['architecture'] = data['architecture']
+
+    if api.glance.VERSIONS.active < 2:
+        meta.update({'is_public': is_public, 'properties': properties})
+    else:
+        meta['visibility'] = 'public' if is_public else 'private'
+        meta.update(properties)
+
     return meta
 
 
-class CreateImageForm(forms.SelfHandlingForm):
+if api.glance.get_image_upload_mode() == 'direct':
+    FileField = forms.ExternalFileField
+    CreateParent = six.with_metaclass(forms.ExternalUploadMeta,
+                                      forms.SelfHandlingForm)
+else:
+    FileField = forms.FileField
+    CreateParent = forms.SelfHandlingForm
+
+
+class CreateImageForm(CreateParent):
     name = forms.CharField(max_length=255, label=_("Name"))
     description = forms.CharField(
         max_length=255,
@@ -107,7 +126,8 @@ class CreateImageForm(forms.SelfHandlingForm):
         'data-switch-on': 'source',
         'data-source-url': _('Image Location'),
         'ng-model': 'ctrl.copyFrom',
-        'ng-change': 'ctrl.selectImageFormat(ctrl.copyFrom)'
+        'ng-change': 'ctrl.selectImageFormat(ctrl.copyFrom)',
+        'placeholder': 'http://example.com/image.img'
     }
     image_url = ImageURLField(label=_("Image Location"),
                               help_text=_("An external (HTTP/HTTPS) URL to "
@@ -122,29 +142,32 @@ class CreateImageForm(forms.SelfHandlingForm):
         'ng-change': 'ctrl.selectImageFormat(ctrl.imageFile.name)',
         'image-file-on-change': None
     }
-    image_file = forms.FileField(label=_("Image File"),
-                                 help_text=_("A local image to upload."),
-                                 widget=forms.FileInput(attrs=image_attrs),
-                                 required=False)
+    image_file = FileField(label=_("Image File"),
+                           help_text=_("A local image to upload."),
+                           widget=forms.FileInput(attrs=image_attrs),
+                           required=False)
     kernel = forms.ChoiceField(
         label=_('Kernel'),
         required=False,
-        widget=forms.SelectWidget(
+        widget=forms.ThemableSelectWidget(
             transform=lambda x: "%s (%s)" % (
                 x.name, defaultfilters.filesizeformat(x.size))))
     ramdisk = forms.ChoiceField(
         label=_('Ramdisk'),
         required=False,
-        widget=forms.SelectWidget(
+        widget=forms.ThemableSelectWidget(
             transform=lambda x: "%s (%s)" % (
                 x.name, defaultfilters.filesizeformat(x.size))))
     disk_format = forms.ChoiceField(label=_('Format'),
                                     choices=[],
-                                    widget=forms.Select(attrs={
+                                    widget=forms.ThemableSelectWidget(attrs={
                                         'class': 'switchable',
                                         'ng-model': 'ctrl.diskFormat'}))
-    architecture = forms.CharField(max_length=255, label=_("Architecture"),
-                                   required=False)
+    architecture = forms.CharField(
+        max_length=255,
+        label=_("Architecture"),
+        help_text=_('CPU architecture of the image.'),
+        required=False)
     minimum_disk = forms.IntegerField(
         label=_("Minimum Disk (GB)"),
         min_value=0,
@@ -166,17 +189,41 @@ class CreateImageForm(forms.SelfHandlingForm):
             'class': 'switched',
             'data-source-url': _('Image Location'),
             'data-switch-on': 'source'}))
-    is_public = forms.BooleanField(label=_("Public"), required=False)
-    protected = forms.BooleanField(label=_("Protected"), required=False)
+    is_public = forms.BooleanField(
+        label=_("Public"),
+        help_text=_('Make the image visible across projects.'),
+        required=False)
+    protected = forms.BooleanField(
+        label=_("Protected"),
+        help_text=_('Prevent the deletion of the image.'),
+        required=False)
 
     def __init__(self, request, *args, **kwargs):
         super(CreateImageForm, self).__init__(request, *args, **kwargs)
 
-        if (not settings.HORIZON_IMAGES_ALLOW_UPLOAD or
+        if (api.glance.get_image_upload_mode() == 'off' or
                 not policy.check((("image", "upload_image"),), request)):
             self._hide_file_source_type()
         if not policy.check((("image", "set_image_location"),), request):
             self._hide_url_source_type()
+
+        # GlanceV2 feature removals
+        if api.glance.VERSIONS.active >= 2:
+            # NOTE: GlanceV2 doesn't support copy-from feature, sorry!
+            self._hide_is_copying()
+            if not getattr(settings, 'IMAGES_ALLOW_LOCATION', False):
+                self._hide_url_source_type()
+                if (api.glance.get_image_upload_mode() == 'off' or not
+                        policy.check((("image", "upload_image"),), request)):
+                    # Neither setting a location nor uploading image data is
+                    # allowed, so throw an error.
+                    msg = _('The current Horizon settings indicate no valid '
+                            'image creation methods are available. Providing '
+                            'an image location and/or uploading from the '
+                            'local file system must be allowed to support '
+                            'image creation.')
+                    messages.error(request, msg)
+                    raise ValidationError(msg)
         if not policy.check((("image", "publicize_image"),), request):
             self._hide_is_public()
 
@@ -234,20 +281,25 @@ class CreateImageForm(forms.SelfHandlingForm):
         self.fields['is_public'].widget = HiddenInput()
         self.fields['is_public'].initial = False
 
+    def _hide_is_copying(self):
+        self.fields['is_copying'].widget = HiddenInput()
+        self.fields['is_copying'].initial = False
+
     def clean(self):
         data = super(CreateImageForm, self).clean()
 
         # The image_file key can be missing based on particular upload
         # conditions. Code defensively for it here...
+        source_type = data.get('source_type', None)
         image_file = data.get('image_file', None)
         image_url = data.get('image_url', None)
 
         if not image_url and not image_file:
-            raise ValidationError(
-                _("A image or external image location must be specified."))
-        elif image_url and image_file:
-            raise ValidationError(
-                _("Can not specify both image and external image location."))
+            msg = _("An image file or an external location must be specified.")
+            if source_type == 'file':
+                raise ValidationError({'image_file': [msg, ]})
+            else:
+                raise ValidationError({'image_url': [msg, ]})
         else:
             return data
 
@@ -255,11 +307,11 @@ class CreateImageForm(forms.SelfHandlingForm):
         meta = create_image_metadata(data)
 
         # Add image source file or URL to metadata
-        if (settings.HORIZON_IMAGES_ALLOW_UPLOAD and
+        if (api.glance.get_image_upload_mode() != 'off' and
                 policy.check((("image", "upload_image"),), request) and
                 data.get('image_file', None)):
-            meta['data'] = self.files['image_file']
-        elif data['is_copying']:
+            meta['data'] = data['image_file']
+        elif data.get('is_copying'):
             meta['copy_from'] = data['image_url']
         else:
             meta['location'] = data['image_url']
@@ -272,9 +324,9 @@ class CreateImageForm(forms.SelfHandlingForm):
 
         try:
             image = api.glance.image_create(request, **meta)
-            messages.success(request,
-                             _('Your image %s has been queued for creation.') %
-                             meta['name'])
+            messages.info(request,
+                          _('Your image %s has been queued for creation.') %
+                          meta['name'])
             return image
         except Exception as e:
             msg = _('Unable to create new image')
@@ -319,7 +371,7 @@ class UpdateImageForm(forms.SelfHandlingForm):
         required=False,
         widget=forms.TextInput(attrs={'readonly': 'readonly'}),
     )
-    disk_format = forms.ChoiceField(
+    disk_format = forms.ThemableChoiceField(
         label=_("Format"),
     )
     minimum_disk = forms.IntegerField(label=_("Minimum Disk (GB)"),
@@ -356,9 +408,6 @@ class UpdateImageForm(forms.SelfHandlingForm):
         image_id = data['image_id']
         error_updating = _('Unable to update image "%s".')
         meta = create_image_metadata(data)
-        # Ensure we do not delete properties that have already been
-        # set on an image.
-        meta['purge_props'] = False
 
         try:
             image = api.glance.image_update(request, image_id, **meta)
