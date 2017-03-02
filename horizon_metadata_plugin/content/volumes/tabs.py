@@ -24,12 +24,16 @@ from openstack_dashboard import policy
 
 from horizon_metadata_plugin.content.volumes.backups \
     import tables as backups_tables
+
 from horizon_metadata_plugin.content.volumes.cg_snapshots \
     import tables as cg_snapshots_tables
+
 from horizon_metadata_plugin.content.volumes.cgroups \
-    import tables as vol_cgroup_tables
+    import tables as cgroup_tables
+
 from horizon_metadata_plugin.content.volumes.snapshots \
     import tables as vol_snapshot_tables
+
 from horizon_metadata_plugin.content.volumes.volumes \
     import tables as volume_tables
 
