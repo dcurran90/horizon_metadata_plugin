@@ -21,8 +21,6 @@ from django.conf.urls import url
 from horizon_metadata_plugin.content.images.images import views
 from horizon_metadata_plugin.content.images import views as imgviews
 
-VIEWS_MOD = 'horizon_metadata_plugin.content.images.images.views'
-
 if settings.ANGULAR_FEATURES['images_panel']:
     urlpatterns = [
         url(r'^(?P<image_id>[^/]+)/$', imgviews.AngularIndexView.as_view(),
@@ -30,7 +28,6 @@ if settings.ANGULAR_FEATURES['images_panel']:
     ]
 else:
     urlpatterns = [
-        VIEWS_MOD,
         url(r'^create/$', views.CreateView.as_view(), name='create'),
         url(r'^(?P<image_id>[^/]+)/update/$',
             views.UpdateView.as_view(), name='update'),

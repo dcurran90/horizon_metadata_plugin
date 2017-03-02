@@ -19,10 +19,7 @@ from horizon_metadata_plugin.content.volumes \
 from horizon_metadata_plugin.content.volumes.backups \
     import views as backup_views
 
-VIEWS_MOD = ('horizon_metadata_plugin.content.volumes.volumes.views')
-
 urlpatterns = [
-    VIEWS_MOD,
     url(r'^create/$', views.CreateView.as_view(), name='create'),
     url(r'^(?P<volume_id>[^/]+)/extend/$',
         views.ExtendView.as_view(),

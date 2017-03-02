@@ -22,8 +22,6 @@ from django.conf.urls import url
 from horizon_metadata_plugin.content.containers import views
 
 
-VIEW_MOD = 'horizon_metadata_plugin.content.containers.views'
-
 if settings.HORIZON_CONFIG['swift_panel'] == 'angular':
     # New angular containers and objects
     urlpatterns = [
@@ -36,7 +34,6 @@ if settings.HORIZON_CONFIG['swift_panel'] == 'angular':
 else:
     # Legacy swift containers and objects
     urlpatterns = [
-        VIEW_MOD,
         url(r'^((?P<container_name>.+?)/)?(?P<subfolder_path>(.+/)+)?$',
             views.ContainerView.as_view(), name='index'),
 
