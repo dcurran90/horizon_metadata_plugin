@@ -55,6 +55,11 @@
 
     return service;
 
+    // this exists solely so that we can mock FormData
+    function formData() {
+      return new FormData();
+    }
+
     // internal use only
     function getContainerURL(container) {
       return '/api/swift/containers/' + encodeURIComponent(container);
